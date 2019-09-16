@@ -95,7 +95,7 @@ START:
 	add sp, 4
 
 	;요일 출력
-	call PRINT_DAY
+;	call PRINT_DAY
 
 	call SPLIT_LINE
 
@@ -285,82 +285,77 @@ PRINT_BCD:
 	pop si					; LIFO 자료구조이므로 삽입의 역순으로 제거(pop)해야 한다.
 	pop bp					; 베이스 포인터 레지스터(BP) 복원
 	ret						; 함수를 호출한 다음 코드의 위치로 복귀
-PRINT_DAY
-	push bp
-	mov bp, sp
+; PRINT_DAY:
+; 	push bp
+; 	mov bp, sp
 
-	mov bx, 0	; 지난 날짜
+; 	mov bx, 0	; 지난 날짜
 
-	push dl
-	call BCD_TO_NUM
-	add sp, 2
-	push bx		; 일을 스택에 저장한다
+; 	push dl
+; 	call BCD_TO_NUM
+; 	add sp, 2
+; 	push bx		; 일을 스택에 저장한다
 
-	push dl
-	call BCD_TO_NUM
-	add sp, 2
-	push bx		; 월을 스택에 저장한다
+; 	push dl
+; 	call BCD_TO_NUM
+; 	add sp, 2
+; 	push bx		; 월을 스택에 저장한다
 
-	
+; 	pop bx
+; 	pop bp
+; 	ret
+; CALCULATE_YEAR:
+; 	mov bx, 0
+; 	push ch		; 연도 더하기	
+; 	call BCD_TO_NUM
+; 	add sp, 2
+; 	add bx, ax
+; 	mul bx, 100
+; 	push cl
+; 	call BCD_TO_NUM
+; 	add sp, 2
+; 	add bx, ax
 
-	CALCULATE_YEAR
-	
+; 	sub bx, 1	; 작년까지의 기간 Pre Year
+; 	push bx		; 년을 스택에 저장한다
 
-	pop bx
-	pop bp
-	ret
-CALCULATE_YEAR:
-	mov bx, 0
-	push ch		; 연도 더하기	
-	call BCD_TO_NUM
-	add sp, 2
-	add bx, ax
-	mul bx, 100
-	push cl
-	call BCD_TO_NUM
-	add sp, 2
-	add bx, ax
+; 	mov cx, 0	; num of days = 
+; 	mov dx, 0
+; 	mov ax, bx	
+; 	div ax, 4	; + year/4
+; 	add cx, ah
+; 	mov ax, bx
+; 	div ax, 400	; + year/400
+; 	add cx, ah
+; 	mov ax, bx
+; 	div ax, 100	; - year/100
+; 	sub cx, ah
 
-	sub bx, 1	; 작년까지의 기간 Pre Year
-	push bx		; 년을 스택에 저장한다
+; 	pop bx
+; 	mul bx, 365
+; 	add bx, cx
+; 	ret
+; CALCULATE_MONTH:
+; CALCULATE_DATE:
+; BCD_TO_NUM:					; bcd를 숫자로 바꾸는 함수
+; 	push bp
+; 	mov bp, sp
+; 	push bx
 
-	mov cx, 0	; num of days = 
-	mov dx, 0
-	mov ax, bx	
-	div ax, 4	; + year/4
-	add cx, ah
-	mov ax, bx
-	div ax, 400	; + year/400
-	add cx, ah
-	mov ax, bx
-	div ax, 100	; - year/100
-	sub cx, ah
+; 	movzx cx, byte[bp+2]
+; 	mov ax, 0
+; 	mov bx, cx
+; 	shl bx, 4
+; 	and bh, 0fh
+; 	mul bh, 10
+; 	add ax, bh
+; 	shr bx, 4
+; 	and bl, 0fh
+; 	add ax, bh
 
-	pop bx
-	mul bx, 365
-	add bx, cx
-	ret
-CALCULATE_MONTH:
-CALCULATE_DATE
-BCD_TO_NUM:					; bcd를 숫자로 바꾸는 함수
-	push bp
-	mov bp, sp
-	push bx
-
-	movzx, byte[bp+2]
-	mov ax, 0
-	mov bx, cx
-	shl bx, 4
-	and bh, 0fh
-	mul bh, 10
-	add ax, bh
-	shr bx, 4
-	and bl, 0fh
-	add ax, bh
-
-	pop bx
-	pop bp
-	ret 
+; 	pop bx
+; 	pop bp
+; 	ret 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;	데이터 영역
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
